@@ -1,0 +1,26 @@
+
+
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px;
+  position: relative; /* Ensures the icon stays inside */
+  background-color: white;
+}
+
+.search-input {
+  border: none;
+  flex-grow: 1;
+  padding: 8px 12px;
+  padding-left: 32px; /* Creates space for the icon */
+  width: 100%;
+  background-color: white;
+}
+
+.search-icon {
+  position: absolute;
+  left: 8px;
+  color: gray;
+}

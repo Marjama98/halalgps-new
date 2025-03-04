@@ -1,0 +1,107 @@
+/* results.css */
+body {
+    background-color: #ffffff !important; /* Force the white background */
+    margin: 0;
+    padding: 0;
+  }
+  /* Apply the color #191919 to all text in your app */
+body, h1, p, span, label {
+    color: #191919;
+  }
+  /* Navbar styling */
+/* Navbar styling */
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* Adjust height as needed */
+  padding: 16px; /* Adjust padding as needed */
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it stays on top */
+}
+
+/* Content styling */
+.content {
+  margin-top: 64px; /* Adjust this value to match the navbar height */
+  padding: 24px;  /* Add padding to the content */
+}
+
+
+  
+/* Search bar styles */
+.search-bar {
+    padding: 1rem;
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid #ccc;
+    transition: all 0.2s ease;
+  }
+  
+  .search-bar:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #007bff;
+  }
+  
+  /* results.css */
+
+/* General styles for filter buttons */
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #ddd; /* Add border outline */
+    font-size: 14px; /* Text size */
+    font-weight: 600;
+    color: #777; /* Grey text */
+    background-color: transparent; /* No background color */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    white-space: nowrap; /* Prevent text from wrapping */
+    width: auto; /* Dynamic width based on text length */
+  }
+  
+  .filter-btn:hover {
+    border-color: #6D7F43; /* Slightly darker border on hover */
+    font-display: regular;
+  }
+  
+  .filter-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #6D7F43; /* Add a focus ring */
+  }
+  
+  .filter-btn span {
+    margin-left: 0.5rem;
+  }
+  
+  
+  /* Dropdown styles */
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0.375rem;
+    z-index: 10;
+    margin-top: 0.5rem;
+  }
+  
+  .dropdown-item {
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+
+  

@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+
+/* Custom Colors */
+:root {
+  --primary-green: #4A7C59; /* Muted Green */
+  --olive: #6D7F43; /* Olive */
+  --light-green: #A2B89C; /* Light Green */
+  --dark-green: #2E4C38; /* Dark Green */
+  --accent-color: #C5D0A7; /* Accent Color */
+  --bg-color: #F4F9F4; /* Light, airy background */
+  --text-color: #333333; /* Dark text for readability */
+}
+
+/* Body */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: #6D7F43;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
