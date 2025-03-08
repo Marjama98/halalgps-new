@@ -1,141 +1,167 @@
 "use client";
-import Navbar from "@/components/Navbar"; // Juster importstien hvis nødvendig
-import Footer from "@/components/footer"; // Importer footeren
-import "./aboutus.css"; // Pass på at CSS-stien er riktig
-import { FaPlus } from "react-icons/fa"; // Kun FaPlus-ikonet
-import React, { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar"; // Adjust the import path if necessary
+import Footer from "@/components/footer"; // Import the footer correctly
+import { FaPlus } from "react-icons/fa"; // Use only the FaPlus icon
+import React, { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 
-const AboutUs = () => {
+const faqData = [
+  {
+    question: 'What is Halal GPS?',
+    answer: 'Halal GPS helps users find halal-friendly businesses near them, making it easier to navigate and discover halal options.',
+  },
+  {
+    question: 'How do I use Halal GPS?',
+    answer: 'You can search for halal restaurants, stores, and services based on your location. Just use the search bar on the homepage.',
+  },
+  {
+    question: 'How are restaurants halal verified?',
+    answer: 'Restaurants are verified by our team to ensure they meet halal standards before being listed.',
+  },
+  {
+    question: 'Can I add a restaurant to Halal GPS?',
+    answer: 'Yes! If you know of a halal restaurant that is not listed, you can submit it through our platform, and our team will verify its halal status before adding it.',
+  },
+  {
+    question: 'How do I report an issue with a listing?',
+    answer: 'If you find any incorrect information on a listing, you can report it through our platform, and our team will review and update the details as necessary.',
+  },
+  {
+    question: 'Is there a mobile app for Halal GPS?',
+    answer: 'Currently, Halal GPS is available through a responsive website, but we are working on developing a mobile app for a better experience.',
+  },
+  {
+    question: 'Is Halal GPS Muslim owned?',
+    answer: 'Yes, HalalGPS is proudly Muslim-owned!',
+  },
+];
+
+const AboutUsPage = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const toggleAccordion = (index: number) => {
     setActiveIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
-  useEffect(() => {
-    const icons = document.querySelectorAll(".icon-transition");
-    icons.forEach((icon) => {
-      icon.addEventListener("click", () => {
-        icon.classList.toggle("active");
-      });
-    });
-
-    return () => {
-      icons.forEach((icon) => {
-        icon.removeEventListener("click", () => {
-          icon.classList.toggle("active");
-        });
-      });
-    };
-  }, []);
-
   return (
-    <div className="min-h-screen bg-white">
+    <div>
       {/* Navbar */}
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="aboutus-hero relative mb-8">
-        <img
+      <section className="relative px-4 h-[580px]">
+        <Image
           src="/images/about.jpg"
           alt="About Us"
-          className="w-full h-[400px] object-cover"
+          width={1280}
+          height={700}
+          className="absolute object-cover top-0 left-0 w-full h-full"
         />
-        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
         <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-white text-4xl font-bold">
-            Halal GPS connects people with great local businesses.
+          <h1 className="text-white text-[60px] font-bold leading-[75px] text-center font-[Poppins,Helvetica Neue,Helvetica,Arial,sans-serif] break-words mt-auto mb-6">
+            HalalGPS connects people with <br /> great local businesses.
           </h1>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="mt-6 p-6 lg:p-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-8">
-        <div className="text-center">
-          <div className="mb-4">
-            <img src="/images/reviews.png" alt="Reviews" className="w-16 h-16 mx-auto" />
+      <div className="px-32">
+        {/* Feature Section */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-16">
+          <div className="flex flex-col items-center justify-center bg-white text-center p-6 rounded-lg">
+            <Image
+              src="/images/map.png"
+              alt="Restaurant"
+              width={70}
+              height={70}
+              className="mx-auto mb-4"
+            />
+            <h3 className="text-xl font-semibold">Restaurants</h3>
+            <p>Easily find halal restaurants in your <br /> area with our map view.</p>
           </div>
-          <h3 className="text-xl font-semibold mb-2">Reviews</h3>
-          <p className="text-gray-500">
-            Check out the latest reviews of all <br />halal restaurants near you.
-          </p>
-        </div>
+          <div className="flex flex-col items-center justify-center bg-white text-center p-6 rounded-lg">
+            <Image
+              src="/images/rating.png"
+              alt="Reviews"
+              width={70}
+              height={70}
+              className="mx-auto mb-4"
+            />
+            <h3 className="text-xl font-semibold">Reviews</h3>
+            <p>Check out the latest reviews of all <br />halal restaurants near you.</p>
+          </div>
+          <div className="flex flex-col items-center justify-center bg-white text-center p-6 rounded-lg">
+            <Image
+              src="/images/halal.png"
+              alt="Halal"
+              width={70}
+              height={70}
+              className="mx-auto mb-4"
+            />
+            <h3 className="text-xl font-semibold">Halal Verified</h3>
+            <p>All restaurants are verified by HalalGPS so you can dine with ease.</p>
+          </div>
+        </section>
+      </div>
 
-        <div className="text-center">
-          <div className="mb-4">
-            <img src="/images/map.png" alt="Restaurants" className="w-16 h-16 mx-auto" />
-          </div>
-          <h3 className="text-xl font-semibold mb-2">Restaurants</h3>
-          <p className="text-gray-500">
-            Easily find halal restaurants in your <br />area with our map view.
-          </p>
-        </div>
-
-        <div className="text-center">
-          <div className="mb-4">
-            <img src="/images/halal.png" alt="Halal Verification" className="w-16 h-16 mx-auto" />
-          </div>
-          <h3 className="text-xl font-semibold mb-2">Halal Verified</h3>
-          <p className="text-gray-500">
-            We only feature verified halal restaurants <br />so you can dine with ease and peace of mind.
-          </p>
-        </div>
+      <section className="max-w-7xl px-20 py-16 ml-32 mr-32">
+        {/* Content */}
       </section>
 
       {/* About Us Section */}
-      <section className="mt-2 p-2 lg:p-12 bg-white mb-5">
-        <div className="about-title max-w-4xl mx-auto p-6 bg-white rounded-lg">
-          <h1 className="about-title text-center text-2xl font-semibold my-6 mb-8">
-            A Better Way to Find Halal
-          </h1>
-          <p className="about-text text-gray-500 text-center">
-            Our purpose is to make halal food easy to find and more accessible. No more scrolling through endless social media accounts to find a halal place to eat at.
-            With our amazing map view, you can find halal restaurants anywhere in the world with a click of a button.
-          </p>
+      <section className="max-w-7xl mx-auto px-20 py-10 mt-25">
+        <h3 className="text-3xl font-bold mb-4" style={{ fontFamily: 'Spartan, sans-serif' }}> Halal Food Locator</h3>
+        <div className="flex flex-col lg:flex-row items-start gap-6">
+          <div className="flex-1">
+            <p className="text-[rgb(66,71,103)] text-lg font-sans" style={{ fontFamily: 'Spartan, sans-serif' }}>
+              Halal GPS is your go-to guide for discovering halal food places. <br />
+              No more scrolling through endless social media accounts to 
+              find <br />a halal place to eat at. With our extensive restaurant database, <br />you can locate 
+              halal restaurants anywhere with a click of a button.
+            </p>
+          </div>
+          {/* Image container */}
+          <div className="lg:w-[350px] -mt-30 mx-20 h-auto">
+            <Image
+              src="/images/1pic.png"
+              alt="About Us"
+              width={350}
+              height={350}
+              className="w-full h-auto"
+            />
+          </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <h2 className="faq-title text-center text-2xl font-semibold mt-0 mb-8">
-        Facts & Questions
+      <h2 className="text-center text-[#6d7f43] text-4xl font-medium mb-6 lg:text-3xl lg:font-normal lg:mb-6 xl:text-4xl xl:font-normal xl:mb-6 mt-50" style={{ fontFamily: 'Spartan, sans-serif' }}>
+        Frequently Asked Questions
       </h2>
+      <p className="text-center text-xl text-[rgb(66,71,103)] mb-8" style={{ fontFamily: 'Spartan, sans-serif' }}>
+        Have a question? Read through our FAQ below. If you can't find an answer, <br />please email our support team. We're here to help.
+      </p>
 
-      <div className="faq-container px-6 py-10 bg-white mx-auto my-10 max-w-3xl">
-        {[
-          {
-            question: "What is the mission of HalalGPS?",
-            answer:
-              "Our mission is to provide a quick and easy way to find halal food. So no matter where you are, you will always know where you can find halal food.",
-          },
-          {
-            question: "How do we know if a restaurant is truly halal?",
-            answer:
-              "We have a dedicated team that manually verifies all restaurants. We ensure each restaurant provides valid halal certification, confirm halal practices directly with the owners, and regularly monitor and update listings.",
-          },
-          {
-            question: "Is HalalGPS Muslim-owned?",
-            answer: "Yes, HalalGPS is proudly Muslim-owned.",
-          },
-          {
-            question: "Where is HalalGPS available?",
-            answer:
-              "HalalGPS is currently available in Scandinavia. We focus on providing halal restaurant listings in countries like Sweden, Norway, and Denmark, and we're working on expanding to more locations soon!",
-          },
-        ].map((faq, index) => (
-          <div key={index} className="faq-item border-b border-gray-200 mb-6">
+      <section
+        id="about-faq"
+        className="mx-auto mt-8 px-4 py-4 max-w-full lg:max-w-[940px] mb-20 shadow-lg rounded-lg"
+      >
+        {faqData.map((faq, index) => (
+          <div className="mb-8 border-b border-gray-300 pb-4" key={index}>
             <div
-              className="flex justify-between items-start cursor-pointer text-gray-600"
+              className="flex justify-between items-center cursor-pointer gap-x-4"
               onClick={() => toggleAccordion(index)}
             >
               <h3 className="text-xl font-medium">{faq.question}</h3>
-              <div className={`icon-transition ${activeIndex === index ? "active" : ""}`}>
-                <FaPlus className="text-muted-green text-xl transition-all duration-300" />
+              <div className={`transition-all duration-300 ${activeIndex === index ? 'rotate-45' : ''}`}>
+                <FaPlus className="text-[#6d7f43] text-xl transition-all duration-300" />
               </div>
             </div>
-            {activeIndex === index && <p className="mt-4 text-gray-500">{faq.answer}</p>}
+            <div
+              className={`overflow-hidden transition-all duration-500 ease-in-out ${activeIndex === index ? 'max-h-[1000px]' : 'max-h-0'}`}
+            >
+              {activeIndex === index && <p className="mt-4 text-gray-500">{faq.answer}</p>}
+            </div>
           </div>
         ))}
-      </div>
+      </section>
 
       {/* Footer */}
       <Footer />
@@ -143,4 +169,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default AboutUsPage;
