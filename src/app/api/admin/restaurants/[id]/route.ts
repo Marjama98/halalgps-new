@@ -1,65 +1,40 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { Session } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { Restaurant } from '@/types/types';
-import { restaurants } from '@/data/restaurants';
+import { PrismaClient } from '@prisma/client';
 
-// ✅ Remove AdminSession and use the globally extended Session type
-function isAdmin(session: Session | null): boolean {
-  return !!session?.user?.role && session.user.role === 'admin';
-}
+const prisma = new PrismaClient();
 
-// Utility function to find a restaurant by ID with error handling
-function findRestaurant(restaurants: Restaurant[], id: string): Restaurant | undefined {
-  const parsedId = parseInt(id, 10);
-  
-  if (isNaN(parsedId)) {
-    throw new Error('Invalid restaurant ID format');
+export async function GET() {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user || session.user.role !== 'admin') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  return restaurants.find(restaurant => Number(restaurant.id) === parsedId);
+  try {
+    const restaurants = await prisma.restaurant.findMany();
+    return NextResponse.json(restaurants);
+  } catch (error) {
+    console.error('Error fetching restaurants:', error);
+    return NextResponse.json({ error: 'Failed to fetch restaurants' }, { status: 500 });
+  }
 }
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user || session.user.role !== 'admin') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
-    // Extract the ID from the URL
-    const url = new URL(request.url);
-    const id = url.pathname.split('/').pop();
+    const restaurantData = await request.json();
 
-    if (!id) {
-      return NextResponse.json(
-        { error: 'Restaurant ID is required' }, 
-        { status: 400 }
-      );
-    }
-
-    // Check authorization
-    const session = await getServerSession(authOptions);
-    
-    if (!isAdmin(session)) {
-      return NextResponse.json(
-        { error: 'Unauthorized: Admin access required' }, 
-        { status: 401 }
-      );
-    }
-
-    // Find restaurant
-    const restaurant = findRestaurant(restaurants, id);
-    
-    if (!restaurant) {
-      return NextResponse.json(
-        { error: `Restaurant with ID ${id} not found` }, 
-        { status: 404 }
-      );
-    }
-    
-    return NextResponse.json(restaurant);
+    const newRestaurant = await prisma.restaurant.create({
+      data: restaurantData,
+    });
+    return NextResponse.json(newRestaurant);
   } catch (error) {
-    console.error('Error in GET restaurant:', error);
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal server error' }, 
-      { status: 500 }
-    );
+    console.error('Error adding restaurant:', error);
+    return NextResponse.json({ error: 'Failed to add restaurant' }, { status: 500 });
   }
 }

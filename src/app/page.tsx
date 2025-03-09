@@ -1,7 +1,7 @@
 "use client";
-import { Suspense } from "react";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { getSession } from "next-auth/react";
 import SearchBox from "@/components/searchbox";
 import FeaturedRestaurants from "@/components/FeaturedRestaurants";
 import Categories from "@/components/Categories";
@@ -14,7 +14,20 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [mainContent, setMainContent] = useState('Current page content'); // Replace with actual content fetching
+  const [editedContent, setEditedContent] = useState(mainContent);
   const router = useRouter();
+
+  useEffect(() => {
+    async function fetchSession() {
+      const session = await getSession();
+      if (session?.user?.role === 'admin') {
+        setIsAdmin(true);
+      }
+    }
+    fetchSession();
+  }, []);
 
   // Fetch location suggestions with debounce
   useEffect(() => {
@@ -66,6 +79,27 @@ export default function Home() {
     setSelectedRestaurant(null);
   };
 
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setEditedContent(e.target.value);
+  };
+
+  const saveChanges = async () => {
+    const response = await fetch('/api/admin/update-main-page', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content: editedContent }),
+    });
+
+    if (response.ok) {
+      setMainContent(editedContent);
+      alert('Content updated successfully!');
+    } else {
+      alert('Failed to update content.');
+    }
+  };
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div>
@@ -83,6 +117,22 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Main Content */}
+        <div>
+          <p>{mainContent}</p>
+          {isAdmin && (
+            <div>
+              <textarea
+                value={editedContent}
+                onChange={handleContentChange}
+                rows={10}
+                cols={50}
+              />
+              <button onClick={saveChanges}>Save Changes</button>
+            </div>
+          )}
+        </div>
+
         {/* Featured Restaurants */}
         <FeaturedRestaurants onRestaurantClick={handleRestaurantClick} />
 
@@ -90,7 +140,7 @@ export default function Home() {
         <Categories />
 
         {/* Footer */}
-        <Footer />
+        <Footer/>
 
         {/* Restaurant Details Modal */}
         {selectedRestaurant && (
