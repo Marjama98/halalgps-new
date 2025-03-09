@@ -1,11 +1,11 @@
-"use client"; // Add this directive at the top to ensure the file is treated as a client component
+"use client"; // Sikrer at dette er en client-komponent
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getSession } from 'next-auth/react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/footer';
-import { Review } from '@/types/types'; // Ensure this path is correct
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getSession } from "next-auth/react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/footer";
+import { Review } from "@/types/types"; // Sørg for at denne pathen er riktig
 
 const ReviewsPage: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -15,7 +15,7 @@ const ReviewsPage: React.FC = () => {
   useEffect(() => {
     async function fetchSession() {
       const session = await getSession();
-      if (session?.user?.role === 'admin') {
+      if (session?.user?.role === "admin") {
         setIsAdmin(true);
         fetchReviews();
       }
@@ -24,49 +24,49 @@ const ReviewsPage: React.FC = () => {
   }, []);
 
   async function fetchReviews() {
-    const response = await fetch('/api/admin/reviews');
+    const response = await fetch("/api/admin/reviews");
     const data = await response.json();
     setReviews(data);
   }
 
   const handleApprove = async (id: string) => {
     const response = await fetch(`/api/admin/reviews/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status: 'published' }),
+      body: JSON.stringify({ status: "published" }),
     });
     if (response.ok) {
       fetchReviews();
     } else {
-      alert('Failed to approve review');
+      alert("Failed to approve review");
     }
   };
 
   const handleReject = async (id: string) => {
     const response = await fetch(`/api/admin/reviews/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status: 'rejected' }),
+      body: JSON.stringify({ status: "rejected" }),
     });
     if (response.ok) {
       fetchReviews();
     } else {
-      alert('Failed to reject review');
+      alert("Failed to reject review");
     }
   };
 
   const handleDelete = async (id: string) => {
     const response = await fetch(`/api/admin/reviews/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
     if (response.ok) {
       fetchReviews();
     } else {
-      alert('Failed to delete review');
+      alert("Failed to delete review");
     }
   };
 
@@ -77,7 +77,7 @@ const ReviewsPage: React.FC = () => {
         <div className="container mx-auto p-6">
           <h1 className="text-2xl font-bold mb-6">Manage Reviews</h1>
           <ul>
-            {reviews.map(review => (
+            {reviews.map((review) => (
               <li key={review.id} className="mb-4 p-4 border border-gray-300 rounded-md">
                 <h2 className="text-lg font-semibold">Review {review.id}</h2>
                 <p>Restaurant ID: {review.restaurantId}</p>
@@ -85,8 +85,8 @@ const ReviewsPage: React.FC = () => {
                 <p>Rating: {review.rating}</p>
                 <p>Comment: {review.comment}</p>
                 <p>Status: {review.status}</p>
-                <p>Created At: {review.createdAt.toString()}</p>
-                <p>Updated At: {review.updatedAt.toString()}</p>
+                <p>Created At: {review.createdAt ? new Date(review.createdAt).toLocaleString() : "N/A"}</p>
+                <p>Updated At: {review.updatedAt ? new Date(review.updatedAt).toLocaleString() : "N/A"}</p>
                 <div className="mt-4">
                   <button
                     onClick={() => handleApprove(review.id)}
